@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
   envDate: {
     color: '#6B6B6B',
     fontSize: 16,
+    textTransform: 'capitalize',
   },
   textInput: {
     flex: 1,
@@ -69,5 +70,13 @@ export const styles = StyleSheet.create({
     color: '#FDFCFE',
     padding: 16,
     fontSize: 16,
+  },
+  textListEmpty: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#FFF',
+    textAlign: 'justify',
+    letterSpacing: 0.15,
+    lineHeight: 24,
   },
 });

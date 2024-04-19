@@ -4,15 +4,25 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  GestureResponderEvent,
+  FlatList,
 } from 'react-native';
 
 import { styles } from './styles';
 import { useState } from 'react';
+import { User } from '../../components/User';
 
 export const Home = () => {
   const [userList, setUserList] = useState<string[]>([]);
   const [name, setName] = useState<string>('');
+
+  const date = new Date();
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  const currentDate = date.toLocaleDateString('pt-br', options);
 
   const handleAddUser = () => {
     if (name !== '' && !userList?.includes(name)) {
@@ -21,15 +31,15 @@ export const Home = () => {
     }
   };
 
-  const handleRemoveUser = (event: GestureResponderEvent, userName: string) => {
+  const handleRemoveUser = (userName: string) => {
     let removeUser = userList?.filter((user: any) => user !== userName);
     setUserList(removeUser);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.envName}>Nome do evento</Text>
-      <Text style={styles.envDate}>Sexta, 4 de novembro de 2024</Text>
+      <Text style={styles.envName}>Im Here - Rocketseat Ignite</Text>
+      <Text style={styles.envDate}>{currentDate}</Text>
       <View style={styles.form}>
         <TextInput
           placeholder="Nome do participante"
@@ -42,21 +52,21 @@ export const Home = () => {
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
       </View>
-      <ScrollView style={{ backgroundColor: '#6b6b6b', borderRadius: 6 }}>
-        {userList.map((user: string, index: number) => {
-          return (
-            <View key={index} style={styles.list}>
-              <Text style={styles.listItem}>{user}</Text>
-              <TouchableOpacity
-                style={styles.removeButton}
-                onPress={(event) => handleRemoveUser(event, user)}
-              >
-                <Text style={styles.buttonText}>-</Text>
-              </TouchableOpacity>
-            </View>
-          );
-        })}
-      </ScrollView>
+
+      <FlatList
+        keyExtractor={(item) => item}
+        data={userList}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => (
+          <User key={item} user={item} handleRemoveUser={handleRemoveUser} />
+        )}
+        ListEmptyComponent={() => (
+          <Text style={styles.textListEmpty}>
+            Nenhum participante ainda foi inserido. Adicione participantes a sua
+            lista.
+          </Text>
+        )}
+      />
     </View>
   );
 };
