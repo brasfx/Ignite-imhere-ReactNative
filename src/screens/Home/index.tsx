@@ -32,7 +32,7 @@ export const Home = () => {
   };
 
   const handleRemoveUser = (userName: string) => {
-    let removeUser = userList?.filter((user: any) => user !== userName);
+    let removeUser = userList?.filter((user: string) => user !== userName);
     setUserList(removeUser);
   };
 
