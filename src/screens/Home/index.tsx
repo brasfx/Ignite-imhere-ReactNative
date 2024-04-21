@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  Alert,
 } from 'react-native';
 
 import { styles } from './styles';
@@ -26,14 +27,31 @@ export const Home = () => {
 
   const handleAddUser = () => {
     if (name !== '' && !userList?.includes(name)) {
-      setUserList([...userList, name]);
+      setUserList((prevState) => [...prevState, name]);
       setName('');
     }
   };
 
   const handleRemoveUser = (userName: string) => {
-    let removeUser = userList?.filter((user: string) => user !== userName);
-    setUserList(removeUser);
+    Alert.alert(
+      'Remover participante',
+      `Você realmente deseja remover ${userName}?`,
+      [
+        {
+          text: 'Sim',
+          onPress: () => {
+            let removeUser = userList?.filter(
+              (user: string) => user !== userName,
+            );
+            setUserList(removeUser);
+          },
+        },
+        {
+          text: 'Não',
+          style: 'cancel',
+        },
+      ],
+    );
   };
 
   return (
@@ -45,7 +63,7 @@ export const Home = () => {
           placeholder="Nome do participante"
           placeholderTextColor="#6b6b6b"
           style={styles.textInput}
-          onChangeText={(text) => setName(text)}
+          onChangeText={setName}
           value={name}
         />
         <TouchableOpacity style={styles.button} onPress={handleAddUser}>
